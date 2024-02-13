@@ -22,7 +22,5 @@ public class LoginPage {
 		return driver.findElement(By.cssSelector("[data-testid='login-button']"));
 	}
 	
-	public WebElement getWelcomeMessage() {
-		return driver.findElement(By.cssSelector(".MuiBox-root h2"));
-	}
+	
 }

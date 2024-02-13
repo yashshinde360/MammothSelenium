@@ -34,8 +34,18 @@ public class LoginSteps {
 	   loginTestSteps.clickOnLoginButton();
 	}
 
-	@Then("user verifies the homescreen")
+	@Then("user verifies Welcome back message on the homescreen")
 	public void user_verifies_the_homescreen() throws InterruptedException {
 		loginTestSteps.verifyWelcomeMessage();
+	}
+	
+	@Given("user is on loop home screen")
+	public void user_is_on_loop_home_screen() {
+		loginTestSteps.verifyLoopHomePage();
+	}
+
+	@When("user clicks on {string} Hamberger manu and selects {string}")
+	public void user_clicks_on_hamberger_manu_and_selects(String hambergerMenu, String subMenu) {
+		loginTestSteps.navigateToSubMenu(hambergerMenu,subMenu);
 	}
 }

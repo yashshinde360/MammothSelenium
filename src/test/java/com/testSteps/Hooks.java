@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import driverFactory.InitDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.AfterAll;
+import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.Scenario;
@@ -63,7 +64,7 @@ public class Hooks {
 		driver.quit();
 	}
 	
-	@After
+	@AfterStep
 	public void takeScreenshot(Scenario scenario) throws IOException {
 		String screenshotName = scenario.getName().replace(" ", "_");
 		String fileWithPath= null;
