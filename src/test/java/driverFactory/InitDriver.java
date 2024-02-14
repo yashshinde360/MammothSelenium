@@ -14,39 +14,39 @@ import org.openqa.selenium.safari.SafariDriver;
 public class InitDriver {
 
 	public static WebDriver driver;
-	
+
 	public static WebDriver launchBrowser(String browserName) {
+		String downloadFilepath = System.getProperty("user.dir") + "\\testResults";
 		switch (browserName) {
 		case "chrome":
-			System.setProperty("webdriver.chrome.driver", "C:\\VMLogin\\chromedriver.exe");
-			String downloadFilepath = System.getProperty("user.dir")+"\\testResults";
 			HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
 			chromePrefs.put("profile.default_content_settings.popups", 0);
 			chromePrefs.put("download.default_directory", downloadFilepath);
 			ChromeOptions options = new ChromeOptions();
 			options.setExperimentalOption("prefs", chromePrefs);
-			DesiredCapabilities cap = DesiredCapabilities.chrome();
-			cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			DesiredCapabilities cap = new DesiredCapabilities();
+			cap.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 			cap.setCapability(ChromeOptions.CAPABILITY, options);
-			driver= new ChromeDriver(cap);
+			options.merge(cap);
+			driver = new ChromeDriver(options);
 			break;
 		case "firefox":
-			driver= new FirefoxDriver();
+			driver = new FirefoxDriver();
 			break;
 		case "safari":
-			driver= new SafariDriver();
+			driver = new SafariDriver();
 			break;
 		default:
-			driver= new ChromeDriver();
+			driver = new ChromeDriver();
 			break;
 		}
 		driver.manage().deleteAllCookies();
 		driver.manage().window().maximize();
 		return driver;
 	}
-	
+
 	public static WebDriver getDriver() {
 		return driver;
 	}
-	
+
 }

@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class ConfigReader {
 	Properties properties;
-	
+
 	public Properties init_prop() {
 		FileInputStream input;
 		properties = new Properties();
@@ -16,15 +16,15 @@ public class ConfigReader {
 			try {
 				properties.load(input);
 			} catch (IOException e) {
-				//to catch exception while loading data
+				// to catch exception while loading data
 				e.printStackTrace();
 			}
 		} catch (FileNotFoundException e) {
-			//to catch exception for config.properties file
+			// to catch exception for config.properties file
 			e.printStackTrace();
 		}
 		return properties;
-		
+
 	}
-	 
+
 }

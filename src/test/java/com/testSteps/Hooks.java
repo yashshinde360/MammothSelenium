@@ -23,65 +23,65 @@ public class Hooks {
 	public static ConfigReader configReader;
 	public static Properties prop;
 	public static WebDriver driver;
-	
 
-	public static void deleteDirectory(File file)
-    {
-        try {
+	public static void deleteDirectory(File file) {
+		try {
 			for (File subfile : file.listFiles()) {
-			    if (subfile.isDirectory()) {
-			        deleteDirectory(subfile);
-			    }
-			    subfile.delete();
+				if (subfile.isDirectory()) {
+					deleteDirectory(subfile);
+				}
+				subfile.delete();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    }
-	
+	}
+
 	@BeforeAll(order = 0)
 	public static void deleteTestResults() {
 		File file = new File("./testResults");
 		deleteDirectory(file);
-        file.delete();
+		file.delete();
 	}
-	
+
 	@BeforeAll(order = 1)
 	public static void getProperty() {
 		configReader = new ConfigReader();
-		prop= configReader.init_prop();
+		prop = configReader.init_prop();
 	}
-	
+
 	@BeforeAll(order = 2)
 	public static void launchBrowser() {
 		String browserName = prop.getProperty("browser");
 		initDriver = new InitDriver();
-		driver= initDriver.launchBrowser(browserName);
+		driver = initDriver.launchBrowser(browserName);
 	}
-	
+
 	@AfterAll
 	public static void quitBrowser() {
 		driver.quit();
 	}
-	
-	@AfterStep
-	public void takeScreenshot(Scenario scenario) throws IOException {
-		String screenshotName = scenario.getName().replace(" ", "_");
-		String fileWithPath= null;
-		if(scenario.isFailed()) {
-		fileWithPath= "./testResults/"+"FAIL_"+screenshotName+".png";
-		}
-		else {
-		fileWithPath= "./testResults/"+"PASS_"+screenshotName+".png";
-		}
-		TakesScreenshot scrShot =((TakesScreenshot)driver);
-		File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
-		
-		
-		File DestFile=new File(fileWithPath);
 
-        FileUtils.copyFile(SrcFile, DestFile);
-        
+	@After
+	public void takeScenarioScreenshot(Scenario scenario) throws IOException {
+		String screenshotName = scenario.getName().replace(" ", "_");
+		String fileWithPath = null;
+		if (scenario.isFailed()) {
+			fileWithPath = "./testResults/" + "FAIL_" + screenshotName + ".png";
+		} else {
+			fileWithPath = "./testResults/" + "PASS_" + screenshotName + ".png";
+		}
+		TakesScreenshot scrShot = ((TakesScreenshot) driver);
+		File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
+		File DestFile = new File(fileWithPath);
+		FileUtils.copyFile(SrcFile, DestFile);
 	}
-	
+
+	@AfterStep
+	public void attachEachStepScreenshot(Scenario scenario) {
+		String screenshotName = scenario.getName().replace(" ", "_");
+		byte[] sourcePath = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+		scenario.attach(sourcePath, "image/png", screenshotName);
+	}
+
 }
