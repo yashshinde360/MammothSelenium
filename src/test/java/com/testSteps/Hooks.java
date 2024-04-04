@@ -64,12 +64,17 @@ public class Hooks {
 
 	@After
 	public void takeScenarioScreenshot(Scenario scenario) throws IOException {
-		String screenshotName = scenario.getName().replace(" ", "_");
+		String pattern = "[\\s\"]";
+		String screenshotName = scenario.getName().replaceAll(pattern, "_");
 		String fileWithPath = null;
 		if (scenario.isFailed()) {
 			fileWithPath = "./testResults/" + "FAIL_" + screenshotName + ".png";
-		} else {
+		} else if(scenario.getStatus().toString().equalsIgnoreCase("PASSED")) {
+			System.out.println();
 			fileWithPath = "./testResults/" + "PASS_" + screenshotName + ".png";
+		}
+		else {
+			fileWithPath = "./testResults/" + "UNDEFINED_SKIPPED_AMBIGUOUS_" + screenshotName + ".png";
 		}
 		TakesScreenshot scrShot = ((TakesScreenshot) driver);
 		File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
@@ -79,7 +84,8 @@ public class Hooks {
 
 	@AfterStep
 	public void attachEachStepScreenshot(Scenario scenario) {
-		String screenshotName = scenario.getName().replace(" ", "_");
+		String pattern = "[\\s\"]";
+		String screenshotName = scenario.getName().replaceAll(pattern, "_");
 		byte[] sourcePath = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 		scenario.attach(sourcePath, "image/png", screenshotName);
 	}

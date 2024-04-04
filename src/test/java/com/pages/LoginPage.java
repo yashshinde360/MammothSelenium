@@ -11,16 +11,18 @@ public class LoginPage {
 	}
 	
 	public WebElement getuserNameField() {
-		return driver.findElement(By.cssSelector("[data-testid='login-email'] input"));
+		return driver.findElement(By.id("username"));
 	}
 	
 	public WebElement getPasswordField() {
-		return driver.findElement(By.cssSelector("[data-testid='login-password'] input"));
+		return driver.findElement(By.id("password"));
 	}
 	
 	public WebElement getLoginButton() {
-		return driver.findElement(By.cssSelector("[data-testid='login-button']"));
+		return driver.findElement(By.xpath("//span[text()='Log In']"));
 	}
 	
-	
+	public WebElement getProfileIcon() {
+		return driver.findElement(By.cssSelector("[data-name*='profile']"));
+	}
 }

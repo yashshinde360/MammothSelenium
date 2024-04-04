@@ -1,5 +1,7 @@
 package driverFactory;
 
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.util.HashMap;
 
 import org.openqa.selenium.PageLoadStrategy;
@@ -29,6 +31,7 @@ public class InitDriver {
 			cap.setCapability(ChromeOptions.CAPABILITY, options);
 			options.merge(cap);
 			driver = new ChromeDriver(options);
+			
 			break;
 		case "firefox":
 			driver = new FirefoxDriver();
